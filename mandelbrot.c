@@ -3,7 +3,7 @@
 
 #define RESET "\033[0m"
 #define REVERSE "\033[7m"
-#define WHITE "\033[37m"
+#define BLACK "\033[30m"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 #define YELLOW "\033[33m"
@@ -83,7 +83,7 @@ void show(int set[h][w]) {
     for (i = 0; i < h; ++i) {
         for (j = 0; j < w; ++j) {
             if (set[i][j] == -1) {
-                printf(WHITE);
+                printf(BLACK);
             } else {
                 switch(set[i][j] % 6) {
                 case 0:
