@@ -11,6 +11,8 @@
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 
+#define FONT_RATIO 1.8
+
 int w;
 int h;
 double scale;
@@ -54,7 +56,7 @@ void init(Complex c_plane[h][w], int set[h][w]) {
     for (i = 0; i < h; ++i) {
         for (j = 0; j < w; ++j) {
             c_plane[i][j].re = (j - m_w) * scale + x_offset;
-            c_plane[i][j].im = ((m_h - i) * scale + y_offset) * 2;
+            c_plane[i][j].im = ((m_h - i) * scale + y_offset) * FONT_RATIO;
             set[i][j] = -1;
         }
     }
