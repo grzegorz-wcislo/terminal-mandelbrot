@@ -50,28 +50,28 @@ int main(int argc, char *argv[]) {
 }
 
 void init(Complex c_plane[h][w], int set[h][w]) {
-    int i, j;
+    int y, x;
     double m_w = ((double)w - 1)/2;
     double m_h = ((double)h - 1)/2;
-    for (i = 0; i < h; ++i) {
-        for (j = 0; j < w; ++j) {
-            c_plane[i][j].re = (j - m_w) * scale + x_offset;
-            c_plane[i][j].im = ((m_h - i) * scale + y_offset) * FONT_RATIO;
-            set[i][j] = -1;
+    for (y = 0; y < h; ++y) {
+        for (x = 0; x < w; ++x) {
+            c_plane[y][x].re = (x - m_w) * scale + x_offset;
+            c_plane[y][x].im = ((m_h - y) * scale + y_offset) * FONT_RATIO;
+            set[y][x] = -1;
         }
     }
 }
 
 void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
-    int i, j, k;
+    int y, x, i;
     Complex z;
-    for (i = 0; i < h; ++i) {
-        for (j = 0; j < w; ++j) {
-            z = c_plane[i][j];
-            for (k = 0; k < iter; ++k) {
-                z = add(square(z), c_plane[i][j]);
+    for (y = 0; y < h; ++y) {
+        for (x = 0; x < w; ++x) {
+            z = c_plane[y][x];
+            for (i = 0; i < iter; ++i) {
+                z = add(square(z), c_plane[y][x]);
                 if (cabs_sq(z) > 4) {
-                    set[i][j] = k;
+                    set[y][x] = i;
                     break;
                 }
             }
@@ -80,14 +80,14 @@ void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
 }
 
 void show(int set[h][w]) {
-    int i, j;
+    int y, x;
     printf(REVERSE);
-    for (i = 0; i < h; ++i) {
-        for (j = 0; j < w; ++j) {
-            if (set[i][j] == -1) {
+    for (y = 0; y < h; ++y) {
+        for (x = 0; x < w; ++x) {
+            if (set[y][x] == -1) {
                 printf(BLACK);
             } else {
-                switch(set[i][j] % 6) {
+                switch(set[y][x] % 6) {
                 case 0:
                     printf(RED);
                     break;
