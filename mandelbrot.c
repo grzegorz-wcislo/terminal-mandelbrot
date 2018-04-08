@@ -88,24 +88,12 @@ void show(int set[h][w]) {
                 printf(BLACK);
             } else {
                 switch(set[y][x] % 6) {
-                case 0:
-                    printf(RED);
-                    break;
-                case 1:
-                    printf(GREEN);
-                    break;
-                case 2:
-                    printf(YELLOW);
-                    break;
-                case 3:
-                    printf(BLUE);
-                    break;
-                case 4:
-                    printf(MAGENTA);
-                    break;
-                case 5:
-                    printf(CYAN);
-                    break;
+                case 0: printf(RED); break;
+                case 1: printf(GREEN); break;
+                case 2: printf(YELLOW); break;
+                case 3: printf(BLUE); break;
+                case 4: printf(MAGENTA); break;
+                case 5: printf(CYAN); break;
                 }
             }
             putchar(' ');
