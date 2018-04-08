@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define RESET "\033[0m"
+#define RESET   "\033[0m"
 #define REVERSE "\033[7m"
-#define BLACK "\033[30m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[34m"
+#define BLACK   "\033[30m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
 #define MAGENTA "\033[35m"
-#define CYAN "\033[36m"
+#define CYAN    "\033[36m"
 
 #define FONT_RATIO 1.8
 
@@ -24,13 +24,13 @@ typedef struct {
     double re, im;
 } Complex;
 
-void init(Complex[h][w], int[h][w]);
-void calculate(Complex[h][w], int[h][w], int);
-void show(int[h][w]);
-
 Complex square(Complex);
 Complex add(Complex, Complex);
 double cabs_sq(Complex);
+
+void init(Complex[h][w], int[h][w]);
+void calculate(Complex[h][w], int[h][w], int);
+void show(int[h][w]);
 
 int main(int argc, char *argv[]) {
     w = atoi(argv[1]);
@@ -42,10 +42,11 @@ int main(int argc, char *argv[]) {
 
     int set[h][w];
     Complex c_plane[h][w];
+
     init(c_plane, set);
     calculate(c_plane, set, max_iter);
-
     show(set);
+
     return 0;
 }
 
@@ -53,6 +54,7 @@ void init(Complex c_plane[h][w], int set[h][w]) {
     int y, x;
     double m_w = ((double)w - 1)/2;
     double m_h = ((double)h - 1)/2;
+
     for (y = 0; y < h; ++y) {
         for (x = 0; x < w; ++x) {
             c_plane[y][x].re = (x - m_w) * scale + x_offset;
@@ -65,6 +67,7 @@ void init(Complex c_plane[h][w], int set[h][w]) {
 void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
     int y, x, i;
     Complex z;
+
     for (y = 0; y < h; ++y) {
         for (x = 0; x < w; ++x) {
             z = c_plane[y][x];
@@ -81,6 +84,7 @@ void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
 
 void show(int set[h][w]) {
     int y, x;
+
     printf(REVERSE);
     for (y = 0; y < h; ++y) {
         for (x = 0; x < w; ++x) {
