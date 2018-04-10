@@ -5,7 +5,7 @@ Mandelbrot set visualisation for terminal.
 ## Compilation and Usage
 
 ### Compilation
-```gcc mandelbrot.c -o mandelbrot```
+```gcc src/mandelbrot.c -o mandelbrot```
 
 ### Usage
 Run with ```./mandelbrot.sh```
