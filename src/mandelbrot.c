@@ -20,24 +20,35 @@ double scale;
 double x_offset;
 double y_offset;
 double max_iter;
+Complex c;
 
 void init(Complex[h][w], int[h][w]);
-void calculate(Complex[h][w], int[h][w], int);
+void calculate_mandelbrot(Complex[h][w], int[h][w], int);
+void calculate_julia(Complex[h][w], int[h][w], int);
 void show(int[h][w]);
 
 int main(int argc, char *argv[]) {
-    w = atoi(argv[1]);
-    h = atoi(argv[2]);
-    scale = 1/atof(argv[3]);
-    x_offset = atof(argv[4]);
-    y_offset = atof(argv[5]);
-    max_iter = atoi(argv[6]);
+    int is_mandelbrot = argv[1][0] == 'm' ? 1 : 0;
+    w = atoi(argv[2]);
+    h = atoi(argv[3]);
+    scale = 1/atof(argv[4]);
+    x_offset = atof(argv[5]);
+    y_offset = atof(argv[6]);
+    max_iter = atoi(argv[7]);
+
+    if (!is_mandelbrot) {
+        c.re = atof(argv[8]);
+        c.im = atof(argv[9]);
+    }
 
     int set[h][w];
     Complex c_plane[h][w];
 
     init(c_plane, set);
-    calculate(c_plane, set, max_iter);
+    if (is_mandelbrot) 
+        calculate_mandelbrot(c_plane, set, max_iter);
+    else 
+        calculate_julia(c_plane, set, max_iter);
     show(set);
 
     return 0;
@@ -57,7 +68,7 @@ void init(Complex c_plane[h][w], int set[h][w]) {
     }
 }
 
-void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
+void calculate_mandelbrot(Complex c_plane[h][w], int set[h][w], int iter) {
     int y, x, i;
     Complex z;
 
@@ -66,6 +77,24 @@ void calculate(Complex c_plane[h][w], int set[h][w], int iter) {
             z = c_plane[y][x];
             for (i = 0; i < iter; ++i) {
                 z = add(square(z), c_plane[y][x]);
+                if (cabs_sq(z) > 4) {
+                    set[y][x] = i;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void calculate_julia(Complex c_plane[h][w], int set[h][w], int iter) {
+    int y, x, i;
+    Complex z;
+
+    for (y = 0; y < h; ++y) {
+        for (x = 0; x < w; ++x) {
+            z = c_plane[y][x];
+            for (i = 0; i < iter; ++i) {
+                z = add(square(z), c);
                 if (cabs_sq(z) > 4) {
                     set[y][x] = i;
                     break;
