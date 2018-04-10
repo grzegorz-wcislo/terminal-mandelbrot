@@ -9,7 +9,7 @@ Mandelbrot set visualisation for terminal.
 
 ### Usage
 Run with ```./mandelbrot.sh```
-Move around using `wsad`, use `qe` to zoom in and out, use 'j' to switch between Mandelbrot and Julia Set. Press any other key to exit.
+Move around using `wsad`, use `qe` to zoom in and out, use `j` to switch between Mandelbrot and Julia Set. Press any other key to exit.
 
 ## Screenshots
 ![1](screenshots/1.png)
