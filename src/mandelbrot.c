@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "complex.h"
 
 #define RESET   "\033[0m"
 #define REVERSE "\033[7m"
@@ -19,14 +20,6 @@ double scale;
 double x_offset;
 double y_offset;
 double max_iter;
-
-typedef struct {
-    double re, im;
-} Complex;
-
-Complex square(Complex);
-Complex add(Complex, Complex);
-double cabs_sq(Complex);
 
 void init(Complex[h][w], int[h][w]);
 void calculate(Complex[h][w], int[h][w], int);
@@ -106,18 +99,4 @@ void show(int set[h][w]) {
     }
     printf(RESET);
     fflush(stdout);
-}
-
-Complex square(Complex c) {
-    Complex res = {c.re*c.re - c.im*c.im, 2*c.re*c.im};
-    return res;
-}
-
-Complex add(Complex c1, Complex c2) {
-    Complex res = {c1.re + c2.re, c1.im + c2.im};
-    return res;
-}
-
-double cabs_sq(Complex c) {
-    return c.re*c.re + c.im*c.im;
 }
