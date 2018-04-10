@@ -28,7 +28,7 @@ void show(int[h][w]);
 int main(int argc, char *argv[]) {
     w = atoi(argv[1]);
     h = atoi(argv[2]);
-    scale = 1/(double)atol(argv[3]);
+    scale = 1/atof(argv[3]);
     x_offset = atof(argv[4]);
     y_offset = atof(argv[5]);
     max_iter = atoi(argv[6]);
