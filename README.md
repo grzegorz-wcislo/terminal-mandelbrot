@@ -10,7 +10,6 @@ Or `sudo make install` and run with `mandelbrot` from anywhere!
 
 
 ## Usage
-Run with ```./mandelbrot.sh```
 Move around using `wsad`, use `qe` to zoom in and out, use `j` to switch between Mandelbrot and Julia Set. Press any other key to exit.
 
 
