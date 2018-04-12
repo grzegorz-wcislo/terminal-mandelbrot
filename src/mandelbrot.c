@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "complex.h"
 
+/* Colors used while drawing fractals */
 #define RESET   "\033[0m"
 #define REVERSE "\033[7m"
 #define BLACK   "\033[30m"
@@ -12,71 +13,98 @@
 #define MAGENTA "\033[35m"
 #define CYAN    "\033[36m"
 
+/* Terminal characters are not perfect squares */
 #define FONT_RATIO 1.8
 
-int w;
-int h;
-double scale;
-double x_offset;
-double y_offset;
-double max_iter;
-Complex c;
+int w;              /* number of terminal columns */
+int h;              /* number of terminal rows */
+double scale;       /* arbitrary zoom factor - smaller means greater zoom */
+Complex center;     /* center of the visible fractal */
+double max_iter;    /* number of iterations while calculating fractal */
+int is_mandelbrot;  /* type of the fractal */
+Complex c;          /* complex parameter used to calculate julia sets */
 
-void init(Complex[h][w], int[h][w]);
-void calculate_mandelbrot(Complex[h][w], int[h][w], int);
-void calculate_julia(Complex[h][w], int[h][w], int);
-void show(int[h][w]);
+void parse_args(int argc, char *argv[]);
+void init(Complex c_plane[h][w], int set[h][w]);
+void calculate_fractal(Complex c_plane[h][w], int set[h][w]);
+void show(int set[h][w]);
 
-int main(int argc, char *argv[]) {
-    int is_mandelbrot = argv[1][0] == 'm' ? 1 : 0;
-    w = atoi(argv[2]);
-    h = atoi(argv[3]);
-    scale = 1/atof(argv[4]);
-    x_offset = atof(argv[5]);
-    y_offset = atof(argv[6]);
-    max_iter = atoi(argv[7]);
+/* Arguments supplied via the command line:
+ * 1) type of the fractal (m - Mandelbrot, j - Julia)
+ * 2) image width
+ * 3) image height
+ * 4) zoom
+ * 5) center x
+ * 6) center y
+ * 7) number of iterations to calculate
+ * 8) (julia) parameter x
+ * 9) (julia) parameter y
+ */
+int main(int argc, char *argv[])
+{
+    parse_args(argc, argv);
 
-    if (!is_mandelbrot) {
-        c.re = atof(argv[8]);
-        c.im = atof(argv[9]);
-    }
-
-    int set[h][w];
-    Complex c_plane[h][w];
+    Complex c_plane[h][w];  /* numbers on the complex plane */ 
+    int set[h][w];          /* number of iterations before point diverges */
 
     init(c_plane, set);
-    if (is_mandelbrot) 
-        calculate_mandelbrot(c_plane, set, max_iter);
-    else 
-        calculate_julia(c_plane, set, max_iter);
+
+    calculate_fractal(c_plane, set);
+
     show(set);
 
     return 0;
 }
 
-void init(Complex c_plane[h][w], int set[h][w]) {
+void parse_args(int argc, char *argv[])
+{
+    if (argc < 8) exit(1);
+
+    is_mandelbrot = argv[1][0] == 'm' ? 1 : 0;
+    w = atoi(argv[2]);
+    h = atoi(argv[3]);
+    scale = 1/atof(argv[4]);
+    center.re = atof(argv[5]);
+    center.im = atof(argv[6]);
+    max_iter = atoi(argv[7]);
+
+    if (!is_mandelbrot) {
+        if (argc < 10) exit(2);
+
+        c.re = atof(argv[8]);
+        c.im = atof(argv[9]);
+    }
+}
+
+/* Initializes the complex plane and divergence
+ * Center of the plane lies at (center.re, center.im)
+ * Each other point is offset according to scale in the appropriate direction
+ */
+void init(Complex c_plane[h][w], int set[h][w])
+{
     int y, x;
-    double m_w = ((double)w - 1)/2;
-    double m_h = ((double)h - 1)/2;
+    double m_w = ((double)w - 1)/2;  /* middle column (can be fractional) */
+    double m_h = ((double)h - 1)/2;  /* middle row (can be fractional) */
 
     for (y = 0; y < h; ++y) {
         for (x = 0; x < w; ++x) {
-            c_plane[y][x].re = (x - m_w) * scale + x_offset;
-            c_plane[y][x].im = ((m_h - y) * scale + y_offset) * FONT_RATIO;
+            c_plane[y][x].re = (x - m_w) * scale + center.re;
+            c_plane[y][x].im = ((m_h - y) * scale + center.im) * FONT_RATIO;
             set[y][x] = -1;
         }
     }
 }
 
-void calculate_mandelbrot(Complex c_plane[h][w], int set[h][w], int iter) {
+void calculate_fractal(Complex c_plane[h][w], int set[h][w])
+{
     int y, x, i;
     Complex z;
 
     for (y = 0; y < h; ++y) {
         for (x = 0; x < w; ++x) {
             z = c_plane[y][x];
-            for (i = 0; i < iter; ++i) {
-                z = add(square(z), c_plane[y][x]);
+            for (i = 0; i < max_iter; ++i) {
+                z = add(square(z), (is_mandelbrot ? c_plane[y][x] : c));
                 if (cabs_sq(z) > 4) {
                     set[y][x] = i;
                     break;
@@ -86,25 +114,8 @@ void calculate_mandelbrot(Complex c_plane[h][w], int set[h][w], int iter) {
     }
 }
 
-void calculate_julia(Complex c_plane[h][w], int set[h][w], int iter) {
-    int y, x, i;
-    Complex z;
-
-    for (y = 0; y < h; ++y) {
-        for (x = 0; x < w; ++x) {
-            z = c_plane[y][x];
-            for (i = 0; i < iter; ++i) {
-                z = add(square(z), c);
-                if (cabs_sq(z) > 4) {
-                    set[y][x] = i;
-                    break;
-                }
-            }
-        }
-    }
-}
-
-void show(int set[h][w]) {
+void show(int set[h][w])
+{
     int y, x;
 
     printf(REVERSE);
