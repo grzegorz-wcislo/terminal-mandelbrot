@@ -2,14 +2,17 @@
 
 Mandelbrot set visualisation for terminal.
 
-## Compilation and Usage
 
-### Compilation
-```gcc src/mandelbrot.c -o mandelbrot```
+## Installation
+Use `make` to compile, run with `./mandelbrot` (from the same directory).
 
-### Usage
+Or `sudo make install` and run with `mandelbrot` from anywhere!
+
+
+## Usage
 Run with ```./mandelbrot.sh```
 Move around using `wsad`, use `qe` to zoom in and out, use `j` to switch between Mandelbrot and Julia Set. Press any other key to exit.
+
 
 ## Screenshots
 

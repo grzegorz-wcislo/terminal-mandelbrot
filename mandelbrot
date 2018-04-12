@@ -39,7 +39,7 @@ init() {
 
 draw() {
     tput cup 0 0
-    ./mandelbrot $fractal $w $h $scale $x $y 100 $px $py
+    ${BASH_SOURCE[0]}.out $fractal $w $h $scale $x $y 100 $px $py
     tput cup 0 0
     echo "Position: ($x,$y)"
     echo "Zoom: $scale"
