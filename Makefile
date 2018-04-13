@@ -1,7 +1,7 @@
 INSTDIR=/usr/local
 
 mandelbrot:
-	gcc src/mandelbrot.c -o mandelbrot.out
+	gcc src/mandelbrot.c src/complex.c -o mandelbrot.out
 .PHONY: mandelbrot
 
 clean:
