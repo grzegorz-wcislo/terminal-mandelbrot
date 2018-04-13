@@ -1,3 +1,5 @@
+/* Copyright (C) 2018 Grzegorz Wcisło */
+
 #include "complex.h"
 
 /* Returns the square of a complex number */

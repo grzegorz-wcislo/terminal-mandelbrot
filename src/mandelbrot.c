@@ -1,3 +1,5 @@
+/* Copyright (C) 2018 Grzegorz Wcisło */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "complex.h"

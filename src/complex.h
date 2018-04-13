@@ -1,3 +1,5 @@
+/* Copyright (C) 2018 Grzegorz Wcisło */
+
 #ifndef COMPLEX_H_
 #define COMPLEX_H_
 
