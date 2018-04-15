@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Copyright (C) 2018 Grzegorz Wcisło
+
+# polar coordinates
+radius=0.78
+phi=0
+
+main() {
+    init
+    while :; do
+        # rotate parameter and redraw
+        phi=$(echo "$phi" | awk '{printf("%f", $1 + 0.05)}')
+        draw
+        sleep 0.05
+    done
+}
+
+init() {
+    resize
+
+    # set default parameters
+    x=-0.5
+    y=0
+    scale=$DEFAULT_SCALE
+    max_iter=15
+    fractal=m
+
+    # save terminal state, hide cursor and clear
+    tput smcup
+    tput civis
+    tput clear
+
+    trap 'resize; draw' WINCH # terminal resize signal
+    trap cleanup INT
+}
+
+resize() {
+    # set new width and height
+    w=$(tput cols)
+    h=$(tput lines)
+    DEFAULT_SCALE=$h
+}
+
+draw() {
+    # move cursor to (0,0)
+    tput cup 0 0
+
+    # calculate carthesian coordinates
+    px=$(echo "$phi $radius" | awk '{printf("%f", $2*cos($1))}')
+    py=$(echo "$phi $radius" | awk '{printf("%f", $2*sin($1))}')
+
+    # draw fractal
+    ./mandelbrot.out j $w $h $scale 0 0 $max_iter $px $py
+}
+
+show_debug() {
+    tput cup 0 0
+    echo "Position: ($x,$y)"
+    echo "Zoom: $scale"
+    echo "Parameter: ($px,$py)"
+}
+
+cleanup() {
+    # restore teminal state and show cursor
+    tput rmcup
+    tput cnorm
+    exit 0
+}
+
+main
+
