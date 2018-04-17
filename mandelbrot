@@ -15,7 +15,11 @@ main() {
             a) x=$(echo "$x $scale" | awk '{printf "%f", $1-6/$2}') ;;
             q) scale=$(echo "$scale" | awk '{printf "%f", $1/1.1}') ;;
             e) scale=$(echo "$scale" | awk '{printf "%f", $1*1.1}') ;;
-            j) switch_fractal ;;
+            i) py=$(echo "$py" | awk '{printf "%f", $1+0.01}') ;;
+            k) py=$(echo "$py" | awk '{printf "%f", $1-0.01}') ;;
+            l) px=$(echo "$px" | awk '{printf "%f", $1+0.02}') ;;
+            j) px=$(echo "$px" | awk '{printf "%f", $1-0.02}') ;;
+            f) switch_fractal ;;
             ?) cleanup ;;
         esac
     done
