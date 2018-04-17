@@ -10,7 +10,16 @@ Or `sudo make install` and run with `mandelbrot` from anywhere!
 
 
 ## Usage
-Move around using `wsad`, use `qe` to zoom in and out, use `j` to switch between Mandelbrot and Julia Set. Press any other key to exit.
+Move around using `wsad`, use `qe` to zoom in and out.
+Press any of the unused keys to exit.
+
+### Mandelbrot Mode
+This is the default mode.
+Use `f` to switch to Julia mode (your location is used as the complex parameter).
+
+### Julia Mode
+In addition to Mandelbrot navigation, `ikjl` change the complex parameter.
+Use `f` to switch to Mandelbrot mode.
 
 
 ## Screenshots
